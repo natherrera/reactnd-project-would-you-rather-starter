@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
+import PropTypes from 'prop-types';
 import {
     Card,
     Form
@@ -18,20 +19,11 @@ class NewQuestion extends React.PureComponent
         }
     };
 
-    componentDidMount = () => {
-        const { credentials } = this.props;
-        console.log(credentials);
-    }
-
     onQuestionsSubmit = () =>
     {
 
-        console.log(this.state.values);
-
         const { dispatch, credentials } = this.props;
         const { questionOne, questionTwo } = this.state.values;
-
-
 
         const response = {
             author: credentials.name,
@@ -43,7 +35,6 @@ class NewQuestion extends React.PureComponent
         dispatch(
             SessionAction.Action(SessionAction.Types.FETCH_QUESTION, response)
         );
-
 
     };
 
@@ -118,6 +109,15 @@ class NewQuestion extends React.PureComponent
         );
     }
 }
+
+NewQuestion.propTypes = {
+
+    onInputChange: PropTypes.func,
+    onQuestionsSubmit: PropTypes.func,
+    credentials: PropTypes.objectOf(PropTypes.any),
+
+};
+
 
 function mapStateToProps({
     [SessionAction.Key]: {
