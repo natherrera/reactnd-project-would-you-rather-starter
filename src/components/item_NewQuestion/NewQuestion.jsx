@@ -1,9 +1,12 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
 import {
     Card,
     Form
 } from 'semantic-ui-react';
 import './../../assets/styles/components/newQuestion.css';
+import { SessionAction } from '../../store/actions';
 
 
 class NewQuestion extends React.PureComponent
@@ -15,12 +18,31 @@ class NewQuestion extends React.PureComponent
         }
     };
 
+    componentDidMount = () => {
+        const { credentials } = this.props;
+        console.log(credentials);
+    }
+
     onQuestionsSubmit = () =>
     {
 
         console.log(this.state.values);
 
-        const { dispatch } = this.props;
+        const { dispatch, credentials } = this.props;
+        const { questionOne, questionTwo } = this.state.values;
+
+
+
+        const response = {
+            author: credentials.name,
+            id: credentials.id,
+            optionOneText: questionOne,
+            optionTwoText: questionTwo
+        }
+
+        dispatch(
+            SessionAction.Action(SessionAction.Types.FETCH_QUESTION, response)
+        );
 
 
     };
@@ -97,4 +119,16 @@ class NewQuestion extends React.PureComponent
     }
 }
 
-export default NewQuestion;
+function mapStateToProps({
+    [SessionAction.Key]: {
+        authenticated,
+        credentials
+    }
+}) {
+    return {
+        authenticated,
+        credentials,
+    };
+}
+
+export default connect(mapStateToProps)(withRouter(NewQuestion));
