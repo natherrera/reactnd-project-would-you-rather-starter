@@ -1,5 +1,11 @@
-import Wallpaper from './wallpaper.jpg';
+import John from './users/John.jpg';
+import Sarah from './users/Sarah.jpg';
+import Tyler from './users/Tyler.jpg';
+import wallPaper from './wallPaper.png'
 
 export {
-    Wallpaper
+    John,
+    Sarah,
+    Tyler,
+    wallPaper
 };

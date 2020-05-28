@@ -109,7 +109,7 @@ class LoginPage extends React.PureComponent
 
                   <Form.Button
                       fluid
-                      color='teal'
+                      color='blue'
                       type='submit'
                   >
                       Log In
