@@ -2,13 +2,13 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { SessionAction } from '../../store/actions';
 
 import {
     Card,
     Form
 } from 'semantic-ui-react';
 import './../../assets/styles/components/newQuestion.css';
-import { SessionAction } from '../../store/actions';
 
 
 class NewQuestion extends React.PureComponent
@@ -121,12 +121,10 @@ NewQuestion.propTypes = {
 
 function mapStateToProps({
     [SessionAction.Key]: {
-        authenticated,
         credentials
     }
 }) {
     return {
-        authenticated,
         credentials,
     };
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import LoginPage from '../../pages/LoginPage';
-import { wallPaper } from '../../assets/images'
+import { wallPaper } from '../../assets/images';
+import { Card, Icon, Image } from 'semantic-ui-react';
 
 
 export default function Login()
@@ -8,18 +9,18 @@ export default function Login()
 
     return  (
         <div>
-            <div className="ui card centered" style={{marginTop: 3 + 'em'}} >
-                <div className="image"><img src={wallPaper} /></div>
-                <div className="content">
-                    <div className="header">Hello Friend!</div>
-                    <div className="description">
+            <Card style={{marginTop: 3 + 'em'}} centered>
+                <Image src={wallPaper}  wrapped ui={false}  />
+                <Card.Content>
+                <Card.Header>Hello Friend!</Card.Header>
+                <Card.Description>
                     Please choose your user, and enjoy the game!
-                    </div>
-                </div>
-                <div className="extra content">
-                <LoginPage />
-                </div>
-                </div>
+                </Card.Description>
+                </Card.Content>
+                <Card.Content extra>
+                    <LoginPage />
+                </Card.Content>
+            </Card>
         </div>
     );
 }

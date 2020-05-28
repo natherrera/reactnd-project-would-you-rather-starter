@@ -39,6 +39,14 @@ class MainPage extends React.Component {
 
     }
 
+    componentDidMount = () => {
+        const { dispatch } = this.props;
+
+        dispatch(
+            SessionAction.Action(SessionAction.Types.GET_USERS),
+        );
+    }
+
 
     render() {
         const { activeItem } = this.state;

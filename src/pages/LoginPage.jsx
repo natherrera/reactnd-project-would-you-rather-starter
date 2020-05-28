@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
 import { Form, Message } from 'semantic-ui-react';
-// import '../styles/pages/login-page.scss';
+import '../assets/styles/pages/login-page.css';
 import { SessionAction } from './../store/actions';
 import { loginInputs } from '../config/inputIds';
 

@@ -1,72 +1,40 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { SessionAction } from '../../store/actions';
+
 import {
     Card
 } from 'semantic-ui-react';
 import './../../assets/styles/components/loaderBoard.css';
 
 
+const allUsers = (users, id) => {
+    const postUsers = Object.values(users).filter(e => e.id !== id)
+    return postUsers
+}
+
 class LoaderBoard extends React.PureComponent
 {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            usersBoard: [
-                {
-                    id: 0,
-                    name: 'defaultName',
-                    avatar: 'https://react.semantic-ui.com/images/avatar/large/matthew.png',
-                    answeredQuestions: 6,
-                    createdQuestions: 2,
-                    ScorePoints: 40,
-                    questions: [
-                        {
-                            key: '1',
-                            optionOne: 'Pregunta 1',
-                            optionTwo: 'Pregunta 2'
-                        }, {
-                            key: '2',
-                            optionOne: 'Pregunta 1',
-                            optionTwo: 'Pregunta 2'
-                        },
-                    ],
-                    answered: [
-                        {
-                            questionKey: '1',
-                            answer: 'optionOne'
-                        }
-                    ]
-
-                }, {
-                    id: 1,
-                    name: 'defaultName2',
-                    avatar: 'https://react.semantic-ui.com/images/avatar/large/elliot.jpg',
-                    answeredQuestions: 8,
-                    createdQuestions: 4,
-                    ScorePoints: 40
-                }
-            ]
-        };
-    }
-
-
     render()
     {
-        const { usersBoard } = this.state;
+        const { users } = this.props;
+
         return (
             <Card.Group>
                 <Card>
                     <Card.Content>
                         <div className="ui items">
                             {
-                            usersBoard.map((e) => (
+                            users.map((e) => (
                                 <div key={
                                         e.id
                                     }
                                     className="item">
                                     <div className="image"><img src={
-                                            e.avatar
+                                            e.avatarURL
                                         }/></div>
                                     <div className="content">
                                         <div className="header">
@@ -74,13 +42,15 @@ class LoaderBoard extends React.PureComponent
                                             e.name
                                         }</div>
                                         <div className="meta">Answered questions: {
-                                            e.answeredQuestions
+                                            Object.keys(e.answers).length
                                         }</div>
                                         <div className="description">Created questions: {
-                                            e.createdQuestions
+                                            e.questions.length
                                         }</div>
                                         <div className="extra">Score: {
+                                            //NOTE: pendiente
                                             e.ScorePoints
+
                                         }</div>
                                     </div>
                                 </div>
@@ -93,4 +63,24 @@ class LoaderBoard extends React.PureComponent
     }
 }
 
-export default LoaderBoard;
+LoaderBoard.propTypes = {
+
+    credentials: PropTypes.objectOf(PropTypes.any),
+    users: PropTypes.arrayOf(PropTypes.any),
+
+};
+
+function mapStateToProps({
+    [SessionAction.Key]: {
+        credentials,
+        users
+    }
+}) {
+    return {
+        credentials: credentials || {},
+        users: allUsers(users, credentials.id)
+    };
+}
+
+export default connect(mapStateToProps)(withRouter(LoaderBoard));
+
