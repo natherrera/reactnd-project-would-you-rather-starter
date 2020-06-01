@@ -7,7 +7,7 @@ import {
 } from 'semantic-ui-react';
 import '../assets/styles/pages/main-page.css';
 import { SessionAction } from './../store/actions';
-import { Home, LoaderBoard, NewQuestion, UserMain } from '../components';
+import { Home, LoaderBoard, NewQuestion, UserMain, UserRather } from '../components';
 
 
 
@@ -21,13 +21,20 @@ class MainPage extends React.Component {
                 'None', 'Home', 'New Question', 'Loader Board'
             ],
 
-            activeItem: 'None'
+            activeItem: 'None',
+            users: [],
+            userRather: []
         };
     }
 
     handleItemClick = (e, {name}) => this.setState({activeItem: name})
 
-    changeItem = (item) => this.setState({activeItem: item})
+    changeItem = (item, name, obj) => {
+        this.setState({
+            activeItem: item,
+            [name]: obj
+        })
+    }
 
     logout = () => {
 
@@ -49,7 +56,7 @@ class MainPage extends React.Component {
 
 
     render() {
-        const { activeItem } = this.state;
+        const { activeItem, users, userRather } = this.state;
         const { userName } = this.props;
 
         return (
@@ -103,7 +110,15 @@ class MainPage extends React.Component {
                         )
                     }{
                         activeItem === 'None' && (
-                            <UserMain />
+                            <UserMain
+                                users={users}
+                            />
+                        )
+                    }{
+                        activeItem === 'User Rather' && (
+                            <UserRather
+                                userRather={userRather}
+                            />
                         )
                     }
             </div>

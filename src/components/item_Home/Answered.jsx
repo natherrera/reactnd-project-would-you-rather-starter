@@ -10,34 +10,44 @@ import {
 } from 'semantic-ui-react';
 
 
-const getQuestions = (questions, credentials) => {
-    const a = credentials.id;
+const getQuestions = (questions, credentials, users) => {
     const q = Object.values(questions);
     const cq = Object.keys(credentials.answers);
     const userQuestions = q.filter(e => cq.indexOf(e.id) !== -1);
-
+    userQuestions.forEach(e => {
+        e.avatarURL = users[e.author].avatarURL
+        e.name = users[e.author].name
+        e.section = 'answered'
+    });
     return userQuestions;
 }
 
 class Answered extends React.PureComponent {
 
+    constructor(props) {
+        super(props);
+
+        this.handleButtonChange = this.handleButtonChange.bind(this);
+    }
+
+
     getAnswer = (user) => {
         const { credentials} = this.props;
         const option = credentials.answers[user.id]
         const answer =  option === 'optionOne' ? user.optionOne.text : user.optionTwo.text;
-
+        user.answer = [{ option: option, text: answer }];
         return answer
     }
 
-    changeItem = () => {
+    handleButtonChange(item) {
         const { changeItem } = this.props;
-        changeItem && changeItem('None');
+        const userRather = item;
+        changeItem && changeItem('User Rather', 'userRather', userRather);
     }
 
     render() {
 
-        const { users, answered} = this.props;
-
+        const { answered } = this.props;
 
         return (
             <>
@@ -45,16 +55,15 @@ class Answered extends React.PureComponent {
                 answered.map((user) =>
 
                 <Item key={user.id}>
-                    <Item.Image size='small' src={users[user.author].avatarURL} />
+                    <Item.Image size='small' src={user.avatarURL} />
 
                     <Item.Content >
-                        <Item.Header>{users[user.author].name} asks: </Item.Header>
+                        <Item.Header>{user.name} asks: </Item.Header>
                         <Item.Description>
                             <h3>Would you rather ...</h3>
                             <p> {this.getAnswer(user)}  </p>
                             <Button basic color='teal'
-                            onClick={
-                                this.changeItem
+                            onClick={ (event) => this.handleButtonChange(user)
                             }
                             >View Poll</Button>
                         </Item.Description>
@@ -69,7 +78,7 @@ class Answered extends React.PureComponent {
 }
 
 Answered.propTypes = {
-    changeItem: PropTypes.func,
+    handleButtonChange: PropTypes.func,
     getAnswer: PropTypes.func,
     users: PropTypes.objectOf(PropTypes.any),
     answered: PropTypes.arrayOf(PropTypes.any),
@@ -85,8 +94,7 @@ function mapStateToProps({
 }) {
     return {
         credentials: credentials || {},
-        users: users,
-        answered: getQuestions(questions, credentials),
+        answered: getQuestions(questions, credentials, users),
     };
 }
 

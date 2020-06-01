@@ -10,24 +10,35 @@ import {
 } from 'semantic-ui-react';
 
 
-const getUnQuestions = (questions, credentials) => {
+const getUnQuestions = (questions, credentials, users) => {
     const q = Object.values(questions);
     const cq = Object.keys(credentials.answers);
     const userUnQuestions = q.filter(e => cq.indexOf(e.id) === -1);
+    userUnQuestions.forEach(e => {
+        e.avatarURL = users[e.author].avatarURL
+        e.name = users[e.author].name
+        e.section = 'unanswered'
+    });
     return userUnQuestions;
 }
 class Unanswered extends React.PureComponent {
 
+    constructor(props) {
+        super(props);
 
-    changeItem = () => {
+        this.handleButtonChange = this.handleButtonChange.bind(this);
+    }
+
+    handleButtonChange(item) {
         const { changeItem } = this.props;
-        changeItem && changeItem('None');
+        const userRather = item;
+        changeItem && changeItem('User Rather', 'userRather', userRather);
     }
 
     render() {
 
 
-        const { users, unanswered} = this.props;
+        const { unanswered } = this.props;
 
         return (
             <>
@@ -35,16 +46,15 @@ class Unanswered extends React.PureComponent {
                 unanswered.map((user) =>
 
                 <Item key={user.id}>
-                    <Item.Image size='small' src={users[user.author].avatarURL} />
+                    <Item.Image size='small' src={user.avatarURL} />
 
                     <Item.Content >
-                        <Item.Header>{users[user.author].name} asks: </Item.Header>
+                        <Item.Header>{user.name} asks: </Item.Header>
                         <Item.Description>
                             <h3>Would you rather ...</h3>
                             <p> { user.optionOne.text }  </p>
                             <Button basic color='teal'
-                            onClick={
-                                this.changeItem
+                            onClick={ (event) => this.handleButtonChange(user)
                             }
                             >View Poll</Button>
                         </Item.Description>
@@ -60,7 +70,7 @@ class Unanswered extends React.PureComponent {
 
 Unanswered.propTypes = {
 
-    changeItem: PropTypes.func,
+    handleButtonChange: PropTypes.func,
     users: PropTypes.objectOf(PropTypes.any),
     unanswered: PropTypes.arrayOf(PropTypes.any),
     credentials: PropTypes.objectOf(PropTypes.any)
@@ -75,8 +85,7 @@ function mapStateToProps({
 }) {
     return {
         credentials: credentials || {},
-        users: users,
-        unanswered: getUnQuestions(questions, credentials)
+        unanswered: getUnQuestions(questions, credentials, users)
     };
 }
 

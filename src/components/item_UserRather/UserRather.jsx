@@ -1,4 +1,9 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { SessionAction } from '../../store/actions';
+
 import {
     Card,
     Image,
@@ -6,10 +11,10 @@ import {
     Progress,
     Button
 } from 'semantic-ui-react';
-import './../../assets/styles/components/userMain.css';
+
+class UserRather extends React.Component {
 
 
-class UserMain extends React.PureComponent {
     constructor(props) {
         super(props);
 
@@ -18,30 +23,34 @@ class UserMain extends React.PureComponent {
         };
     }
 
+    getVotes = () => {
+
+    }
+
     close = () => this.setState({ activeResult: false })
-
-
 
     render() {
 
+        const { userRather } = this.props;
         const { activeResult } = this.state;
-        const { users } = this.props;
-        return (
-            <Card.Group>
-                <Card>
+        console.log(userRather);
+
+        return(
+            <>
+                    <Card>
                     <Card.Content>
-                        <Image circular size='mini' src='https://react.semantic-ui.com/images/avatar/large/jenny.jpg'/>
-                        <Card.Header>Steve Sanders</Card.Header>
+                        <Image circular size='mini' src={userRather.avatarURL}/>
+                        <Card.Header>{ userRather.name }</Card.Header>
                         <Card.Meta>asks:</Card.Meta>
                         {
-                            activeResult ? (
+                            activeResult && userRather.section === 'unanswered' ? (
                             <>
                                 <Card.Description>
                                     <strong>Would You Rather ...</strong>
                                 </Card.Description>
                                 <Form.Group grouped>
-                                    <Form.Field label='This one' control='input' type='radio' name='htmlRadios'/>
-                                    <Form.Field label='That one' control='input' type='radio' name='htmlRadios'/>
+                                    <Form.Field label={userRather.optionOne.text} control='input' type='radio' name='htmlRadios'/>
+                                    <Form.Field label={userRather.optionTwo.text} control='input' type='radio' name='htmlRadios'/>
                                 </Form.Group>
                             </>
                         ) : (
@@ -50,12 +59,17 @@ class UserMain extends React.PureComponent {
                                     <strong>Results</strong>
                                 </Card.Description>
                                 <div className="item-result">
-                                    <div className="insign">
-                                        <p>You choose this!</p>
-                                    </div>
+                                    {
+                                        userRather.answer[0].option === 'optionOne' && (
+                                            <div className="insign" >
+                                                <p>You choose this!</p>
+                                            </div>
+                                        )
+                                    }
                                     <div className="item-title">
                                         <p>Would you rather
-                                            <span>aqui va la pregunta?</span>
+
+                                            <span>{userRather.optionOne.text}</span>
                                         </p>
                                     </div>
                                     <div className="item-progressBar">
@@ -68,8 +82,15 @@ class UserMain extends React.PureComponent {
                                 <br/>
                                 <div className="item-result">
                                     <div className="item-title">
+                                    {
+                                        userRather.answer[0].option === 'optionTwo' && (
+                                            <div className="insign" >
+                                                <p>You choose this!</p>
+                                            </div>
+                                        )
+                                    }
                                         <p>Would you rather
-                                            <span>aqui va la pregunta2?</span>
+                                        <span>{userRather.optionTwo.text}</span>
                                         </p>
                                     </div>
                                     <div className="item-progressBar">
@@ -93,9 +114,33 @@ class UserMain extends React.PureComponent {
 
                     )
                 } </Card>
-            </Card.Group>
-        );
+
+            </>
+        )
     }
 }
 
-export default UserMain;
+UserRather.propTypes = {
+
+    getVotes: PropTypes.func,
+    close: PropTypes.func,
+    users: PropTypes.objectOf(PropTypes.any),
+    userRather: PropTypes.objectOf(PropTypes.any),
+    activeResult: PropTypes.bool
+};
+
+function mapStateToProps({
+    [SessionAction.Key]: {
+        credentials,
+        users,
+        questions
+    }
+}) {
+    return {
+        credentials: credentials || {},
+        users
+    };
+}
+
+export default connect(mapStateToProps)(withRouter(UserRather));
+
