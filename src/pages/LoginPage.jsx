@@ -39,6 +39,10 @@ class LoginPage extends React.PureComponent
             SessionAction.Action(SessionAction.Types.GET_USERS),
         );
 
+        dispatch(
+            SessionAction.Action(SessionAction.Types.GET_QUESTION),
+        );
+
   }
 
   onInputChange = (e, { id, value }) =>

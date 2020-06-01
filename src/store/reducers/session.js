@@ -36,6 +36,24 @@ function SessionReducer(state = SessionDefaults, action) {
                 ... state
             };
 
+        case SessionAction.Types.GET_QUESTION_SUCCESS:
+        {
+                delete state.errorMessage;
+
+            return {
+                ... state,
+                questions: action.payload.questions,
+                questionLoading: false
+            }
+        }
+
+        case SessionAction.Types.GET_QUESTION_ERROR:
+            return {
+                ... state,
+                questionLoading: false,
+                errorMessage: action.payload.errorMessage
+            };
+
         case SessionAction.Types.FETCH_QUESTION:
             return {
                 ... state
@@ -44,12 +62,10 @@ function SessionReducer(state = SessionDefaults, action) {
         case SessionAction.Types.FETCH_QUESTION_SUCCESS:
 
             {
-                debugger;
                 const {author, id, idName} = action.payload.response;
                 const stateAux = state ?? {};
                 const stateAuthor = stateAux.users[idName] ?? {};
-                console.log(stateAuthor.questions);
-                debugger;
+
                 return {
                     ... stateAux,
                     users: {

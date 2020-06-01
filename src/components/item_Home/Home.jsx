@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import {
     Card,
     Tab,
-    Item,
-    Button
+    Item
 } from 'semantic-ui-react';
 import { HomeTab } from '../elements';
 import Answered from './Answered';
@@ -20,41 +21,6 @@ class Home extends React.PureComponent
             views: [
                 'None', 'Home', 'New Question', 'Loader Board'
             ],
-            usersBoard: [
-                {
-                    id: 0,
-                    name: 'defaultName',
-                    avatar: 'https://react.semantic-ui.com/images/avatar/large/matthew.png',
-                    answeredQuestions: 6,
-                    createdQuestions: 2,
-                    ScorePoints: 40,
-                    questions: [
-                        {
-                            key: '1',
-                            optionOne: 'Pregunta 1',
-                            optionTwo: 'Pregunta 2'
-                        }, {
-                            key: '2',
-                            optionOne: 'Pregunta 1',
-                            optionTwo: 'Pregunta 2'
-                        },
-                    ],
-                    answered: [
-                        {
-                            questionKey: '1',
-                            answer: 'optionOne'
-                        }
-                    ]
-
-                }, {
-                    id: 1,
-                    name: 'defaultName2',
-                    avatar: 'https://react.semantic-ui.com/images/avatar/large/elliot.jpg',
-                    answeredQuestions: 8,
-                    createdQuestions: 4,
-                    ScorePoints: 40
-                }
-            ],
             activeItem: 'None',
             panes: ['Unanswered Questions', 'Answered Questions']
         };
@@ -62,7 +28,7 @@ class Home extends React.PureComponent
 
     render()
     {
-        const { panes, usersBoard } = this.state;
+        const { panes } = this.state;
         const { changeItem } = this.props;
 
         return (
@@ -77,21 +43,22 @@ class Home extends React.PureComponent
                                     render: () => (
                                         <>
                                             <Item.Group relaxed className="item-card">
-                                                {e === 'Answered Questions' ? ( usersBoard.map((item) => (
-
-                                                    <Answered
-                                                        user={item}
-                                                        changeItem={changeItem}
-                                                    />
-
-                                                ))) : (
-
-                                                    <Unanswered />
-
-                                                 )}
+                                                {
+                                                    e === 'Answered Questions' ? (
+                                                        <Answered
+                                                            changeItem={changeItem}
+                                                        />
+                                                    ) : (
+                                                        <Unanswered
+                                                            changeItem={changeItem}
+                                                        />
+                                                    )
+                                                }
                                             </Item.Group>
-
-                                        </>)})))}/>
+                                        </>
+                                    )
+                            })))}
+                        />
                     </Card.Content>
                 </Card>
             </Card.Group>
@@ -99,4 +66,11 @@ class Home extends React.PureComponent
     }
 }
 
+Home.propTypes = {
+
+    changeItem: PropTypes.func
+};
+
+
 export default Home;
+

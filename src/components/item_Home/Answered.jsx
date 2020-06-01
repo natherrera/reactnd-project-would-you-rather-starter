@@ -1,13 +1,33 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { SessionAction } from '../../store/actions';
+
 import {
-    Card,
-    Tab,
     Item,
     Button
 } from 'semantic-ui-react';
 
+
+const getQuestions = (questions, credentials) => {
+    const a = credentials.id;
+    const q = Object.values(questions);
+    const cq = Object.keys(credentials.answers);
+    const userQuestions = q.filter(e => cq.indexOf(e.id) !== -1);
+
+    return userQuestions;
+}
+
 class Answered extends React.PureComponent {
 
+    getAnswer = (user) => {
+        const { credentials} = this.props;
+        const option = credentials.answers[user.id]
+        const answer =  option === 'optionOne' ? user.optionOne.text : user.optionTwo.text;
+
+        return answer
+    }
 
     changeItem = () => {
         const { changeItem } = this.props;
@@ -16,18 +36,22 @@ class Answered extends React.PureComponent {
 
     render() {
 
-        const { user} = this.props;
+        const { users, answered} = this.props;
+
 
         return (
             <>
-                <Item>
-                    <Item.Image size='small' src={user.avatar} />
+            {
+                answered.map((user) =>
+
+                <Item key={user.id}>
+                    <Item.Image size='small' src={users[user.author].avatarURL} />
 
                     <Item.Content >
-                        <Item.Header>{user.name} asks: </Item.Header>
+                        <Item.Header>{users[user.author].name} asks: </Item.Header>
                         <Item.Description>
                             <h3>Would you rather ...</h3>
-                            <p>...write javascri...</p>
+                            <p> {this.getAnswer(user)}  </p>
                             <Button basic color='teal'
                             onClick={
                                 this.changeItem
@@ -36,9 +60,35 @@ class Answered extends React.PureComponent {
                         </Item.Description>
                     </Item.Content>
                 </Item>
+
+                )
+            }
             </>
         )
     }
 }
 
-export default Answered;
+Answered.propTypes = {
+    changeItem: PropTypes.func,
+    getAnswer: PropTypes.func,
+    users: PropTypes.objectOf(PropTypes.any),
+    answered: PropTypes.arrayOf(PropTypes.any),
+    credentials: PropTypes.objectOf(PropTypes.any)
+}
+
+function mapStateToProps({
+    [SessionAction.Key]: {
+        credentials,
+        users,
+        questions
+    }
+}) {
+    return {
+        credentials: credentials || {},
+        users: users,
+        answered: getQuestions(questions, credentials),
+    };
+}
+
+export default connect(mapStateToProps)(withRouter(Answered));
+

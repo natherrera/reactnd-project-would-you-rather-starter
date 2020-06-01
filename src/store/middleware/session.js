@@ -57,7 +57,27 @@ function* fetchUsers()
 
 function* getQuestion()
 {
-    yield put(SessionAction.Action(SessionAction.Types.FETCH_QUESTION));
+    try
+    {
+        const response = yield call(webClient._getQuestions);
+
+        if ( response && response !== 'Error' && response !== null && response !== 'null' )
+        {
+
+            const questions = response;
+            yield put(SessionAction.Action(SessionAction.Types.GET_QUESTION_SUCCESS, { questions }));
+        }
+        else
+        {
+            yield put(SessionAction.Action(SessionAction.Types.GET_QUESTION_ERROR, {
+                errorMessage: 'No se pudo establecer la conexión con el servidor'
+            }));
+        }
+    }
+    catch (e)
+    {
+        yield put(SessionAction.Action(SessionAction.Types.GET_QUESTION_ERROR, { errorMessage: e.message }));
+    }
 }
 
 function* fetchQuestion(action)
