@@ -23,17 +23,20 @@ class UserRather extends React.Component {
         };
     }
 
-    getVotes = () => {
-
+    getPercent = (votes) => {
+        const { users } = this.props;
+        const totalUsers = Object.keys(users).length
+        const calcPercent = (votes * 100) / totalUsers;
+        return calcPercent;
     }
 
     close = () => this.setState({ activeResult: false })
 
     render() {
 
-        const { userRather } = this.props;
+        const { userRather, users } = this.props;
         const { activeResult } = this.state;
-        console.log(userRather);
+        const totalUsers = Object.keys(users).length
 
         return(
             <>
@@ -73,9 +76,9 @@ class UserRather extends React.Component {
                                         </p>
                                     </div>
                                     <div className="item-progressBar">
-                                        <Progress percent={100}
+                                        <Progress percent={this.getPercent(userRather.optionOne.votes.length)}
                                             success>
-                                            The progress was successful
+                                                {userRather.optionOne.votes.length} out of {totalUsers} votes
                                         </Progress>
                                     </div>
                                 </div>
@@ -94,9 +97,9 @@ class UserRather extends React.Component {
                                         </p>
                                     </div>
                                     <div className="item-progressBar">
-                                        <Progress percent={100}
+                                        <Progress percent={this.getPercent(userRather.optionTwo.votes.length)}
                                             success>
-                                            The progress was successful
+                                            {userRather.optionTwo.votes.length} out of {totalUsers} votes
                                         </Progress>
                                     </div>
                                 </div>
