@@ -107,8 +107,10 @@ function* fetchQuestion(action)
 
 function* fetchQuestionAnswer(action) {
 
+    const request = action.payload;
+
     try {
-        yield put(SessionAction.Action(SessionAction.Types.FETCH_QUESTION_ANSWER_SUCCESS,  action.payload ));
+        yield put(SessionAction.Action(SessionAction.Types.FETCH_QUESTION_ANSWER_SUCCESS,  request ));
     } catch (error) {
         yield put(SessionAction.Action(SessionAction.Types.FETCH_QUESTION_ANSWER_ERROR, {
             errorMessage: error.message

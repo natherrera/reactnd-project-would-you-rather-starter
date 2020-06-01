@@ -19,7 +19,8 @@ class UserRather extends React.Component {
         super(props);
 
         this.state = {
-            activeResult: true
+            activeResult: true,
+            answer: {}
         };
     }
 
@@ -30,7 +31,26 @@ class UserRather extends React.Component {
         return calcPercent;
     }
 
-    close = () => this.setState({ activeResult: false })
+    getResults = () => this.setState({ activeResult: false })
+
+    onRadioChange = (answer, event) =>
+    {
+        const { authUser, userRather } = this.props;
+        answer.id = event.target.id;
+        answer.authUser = authUser;
+        answer.qid = userRather.id;
+        this.setState({ answer });
+    };
+
+    sendQuestionAnswer = () => {
+        const { dispatch } = this.props;
+        const { answer } = this.state;
+
+
+        dispatch(
+            SessionAction.Action(SessionAction.Types.FETCH_QUESTION_ANSWER, answer),
+        );
+    }
 
     render() {
 
@@ -40,7 +60,7 @@ class UserRather extends React.Component {
 
         return(
             <>
-                    <Card>
+                <Card>
                     <Card.Content>
                         <Image circular size='mini' src={userRather.avatarURL}/>
                         <Card.Header>{ userRather.name }</Card.Header>
@@ -52,8 +72,8 @@ class UserRather extends React.Component {
                                     <strong>Would You Rather ...</strong>
                                 </Card.Description>
                                 <Form.Group grouped>
-                                    <Form.Field label={userRather.optionOne.text} control='input' type='radio' name='htmlRadios'/>
-                                    <Form.Field label={userRather.optionTwo.text} control='input' type='radio' name='htmlRadios'/>
+                                    <Form.Field label={userRather.optionOne.text} id='optionOne' control='input' type='radio' name='answer' onChange={ (event) => this.onRadioChange(userRather.optionOne, event) }/>
+                                    <Form.Field label={userRather.optionTwo.text} id='optionTwo' control='input' type='radio' name='answer' onChange={ (event) => this.onRadioChange(userRather.optionTwo, event) }/>
                                 </Form.Group>
                             </>
                         ) : (
@@ -107,16 +127,18 @@ class UserRather extends React.Component {
                         )
                     } </Card.Content>
                     {
-                    activeResult && (
+                    activeResult && userRather.section === 'unanswered' && (
 
                         <Card.Content extra>
                             <div className='ui two buttons'>
-                                <Button onClick={this.close} color='teal'>Submit</Button>
+                                <Button onClick={this.sendQuestionAnswer} color='teal'>Submit</Button>
                             </div>
                         </Card.Content>
 
                     )
-                } </Card>
+                }
+
+                </Card>
 
             </>
         )
@@ -125,7 +147,8 @@ class UserRather extends React.Component {
 
 UserRather.propTypes = {
 
-    getVotes: PropTypes.func,
+    getPercent: PropTypes.func,
+    onRadioChange: PropTypes.func,
     close: PropTypes.func,
     users: PropTypes.objectOf(PropTypes.any),
     userRather: PropTypes.objectOf(PropTypes.any),
@@ -141,7 +164,8 @@ function mapStateToProps({
 }) {
     return {
         credentials: credentials || {},
-        users
+        users,
+        authUser: credentials.id
     };
 }
 
