@@ -62,24 +62,29 @@ function SessionReducer(state = SessionDefaults, action) {
         case SessionAction.Types.FETCH_QUESTION_SUCCESS:
 
             {
-                const {author, id, idName} = action.payload.response;
-                const stateAux = state ?? {};
-                const stateAuthor = stateAux.users[idName] ?? {};
+                const {id, idName} = action.payload.response;
 
                 return {
-                    ... stateAux,
+                    ... state,
+                    credentials: {
+                        ... state.credentials,
+                        questions: {
+                            ... state.credentials.questions,
+                            id,
+                        }
+                    },
                     users: {
-                        ... stateAux.users,
-                        [author]: {
-                            ... stateAuthor,
+                        ... state.users,
+                        [idName]: {
+                            ... state.users[idName],
                             questions: [
-                                ... stateAuthor.questions,
+                                ... state.users[idName].questions,
                                 id,
                             ]
                         }
                     },
                     questions: {
-                        ... stateAux.questions,
+                        ... state.questions,
                         [id]: action.payload.response
                     }
                 };
