@@ -129,17 +129,7 @@ function SessionReducer(state = SessionDefaults, action) {
                         }
                     },
                     questions: {
-                        ... state.questions,
-                        [qid]: {
-                            ... state[qid],
-                            [id]: {
-                                ... state[id],
-                                votes: {
-                                    ... state.votes,
-                                    ...[authUser]
-                                }
-                            }
-                        }
+                        ... state.questions
                     }
                 };
             }

@@ -10,16 +10,17 @@ import {
 } from 'semantic-ui-react';
 
 
-const getUnQuestions = (questions, credentials, users) => {
+const getUnanswered = (questions = [], credentials = [], users = []) => {
     const q = Object.values(questions);
-    const cq = Object.keys(credentials.answers);
-    const userUnQuestions = q.filter(e => cq.indexOf(e.id) === -1);
-    userUnQuestions.forEach(e => {
+    const userAnswers = Object.keys(credentials.answers);
+    const userUnanswered = q.filter(e => userAnswers.indexOf(e.id) === -1);
+
+    userUnanswered.forEach(e => {
         e.avatarURL = users[e.author].avatarURL
         e.name = users[e.author].name
         e.section = 'unanswered'
     });
-    return userUnQuestions;
+    return userUnanswered;
 }
 class Unanswered extends React.PureComponent {
 
@@ -30,13 +31,14 @@ class Unanswered extends React.PureComponent {
     }
 
     handleButtonChange(item) {
+
         const { changeItem } = this.props;
         const userRather = item;
+
         changeItem && changeItem('User Rather', 'userRather', userRather);
     }
 
     render() {
-
 
         const { unanswered } = this.props;
 
@@ -71,6 +73,7 @@ class Unanswered extends React.PureComponent {
 Unanswered.propTypes = {
 
     handleButtonChange: PropTypes.func,
+    changeItem: PropTypes.func,
     users: PropTypes.objectOf(PropTypes.any),
     unanswered: PropTypes.arrayOf(PropTypes.any),
     credentials: PropTypes.objectOf(PropTypes.any)
@@ -85,7 +88,7 @@ function mapStateToProps({
 }) {
     return {
         credentials: credentials || {},
-        unanswered: getUnQuestions(questions, credentials, users)
+        unanswered: getUnanswered(questions, credentials, users)
     };
 }
 

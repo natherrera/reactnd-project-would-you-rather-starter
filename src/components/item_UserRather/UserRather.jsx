@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -9,7 +9,10 @@ import {
     Image,
     Form,
     Progress,
-    Button
+    Button,
+    Dimmer,
+    Loader,
+    Segment
 } from 'semantic-ui-react';
 
 class UserRather extends React.Component {
@@ -26,12 +29,11 @@ class UserRather extends React.Component {
 
     getPercent = (votes) => {
         const { users } = this.props;
+        const nrVotes = this.getVotes(votes);
         const totalUsers = Object.keys(users).length
-        const calcPercent = (votes * 100) / totalUsers;
+        const calcPercent = (nrVotes * 100) / totalUsers;
         return calcPercent;
     }
-
-    getResults = () => this.setState({ activeResult: false })
 
     onRadioChange = (answer, event) =>
     {
@@ -39,27 +41,47 @@ class UserRather extends React.Component {
         answer.id = event.target.id;
         answer.authUser = authUser;
         answer.qid = userRather.id;
+        userRather.answer = answer;
         this.setState({ answer });
     };
 
     sendQuestionAnswer = () => {
+
+        Promise.all([
+            this.fetchQuestionAnswer()
+          ]).then(this.setState({ activeResult: false }))
+    }
+
+    fetchQuestionAnswer = () => {
         const { dispatch } = this.props;
         const { answer } = this.state;
-
-
-        dispatch(
+        return dispatch(
             SessionAction.Action(SessionAction.Types.FETCH_QUESTION_ANSWER, answer),
-        );
+        )
+    }
+
+    getVotes = (option) => {
+        const { userRather, questions} = this.props;
+        const idQ = userRather.id;
+        const q = Object.keys(questions).filter(e => e === idQ);
+        const question = questions[q][option];
+        const votesQ = question && question.votes;
+        const sizer = votesQ && Object.keys(votesQ).length;
+        const result = isNaN(sizer) ? 0 : sizer;
+
+        return result;
     }
 
     render() {
 
         const { userRather, users } = this.props;
         const { activeResult } = this.state;
-        const totalUsers = Object.keys(users).length
+        const totalUsers = Object.keys(users).length;
+
 
         return(
             <>
+                <Loader message='Cargando' />
                 <Card>
                     <Card.Content>
                         <Image circular size='mini' src={userRather.avatarURL}/>
@@ -78,12 +100,13 @@ class UserRather extends React.Component {
                             </>
                         ) : (
                             <>
+                            <Suspense fallback={ <Loader message='Cargando' /> }>
                                 <Card.Description>
                                     <strong>Results</strong>
                                 </Card.Description>
                                 <div className="item-result">
                                     {
-                                        userRather.answer[0].option === 'optionOne' && (
+                                        userRather.answer.id === 'optionOne' && (
                                             <div className="insign" >
                                                 <p>You choose this!</p>
                                             </div>
@@ -96,9 +119,9 @@ class UserRather extends React.Component {
                                         </p>
                                     </div>
                                     <div className="item-progressBar">
-                                        <Progress percent={this.getPercent(userRather.optionOne.votes.length)}
+                                        <Progress percent={this.getPercent('optionOne')}
                                             success>
-                                                {userRather.optionOne.votes.length} out of {totalUsers} votes
+                                                {this.getVotes('optionOne')} out of {totalUsers} votes
                                         </Progress>
                                     </div>
                                 </div>
@@ -106,7 +129,7 @@ class UserRather extends React.Component {
                                 <div className="item-result">
                                     <div className="item-title">
                                     {
-                                        userRather.answer[0].option === 'optionTwo' && (
+                                        userRather.answer.id === 'optionTwo' && (
                                             <div className="insign" >
                                                 <p>You choose this!</p>
                                             </div>
@@ -117,12 +140,13 @@ class UserRather extends React.Component {
                                         </p>
                                     </div>
                                     <div className="item-progressBar">
-                                        <Progress percent={this.getPercent(userRather.optionTwo.votes.length)}
+                                        <Progress percent={this.getPercent('optionTwo')}
                                             success>
-                                            {userRather.optionTwo.votes.length} out of {totalUsers} votes
+                                            {this.getVotes('optionTwo')} out of {totalUsers} votes
                                         </Progress>
                                     </div>
                                 </div>
+                                </Suspense>
                             </>
                         )
                     } </Card.Content>
@@ -148,24 +172,29 @@ class UserRather extends React.Component {
 UserRather.propTypes = {
 
     getPercent: PropTypes.func,
+    getVotes: PropTypes.func,
+    sendQuestionAnswer: PropTypes.func,
+    fetchQuestionAnswer: PropTypes.func,
     onRadioChange: PropTypes.func,
     close: PropTypes.func,
     users: PropTypes.objectOf(PropTypes.any),
     userRather: PropTypes.objectOf(PropTypes.any),
-    activeResult: PropTypes.bool
+    activeResult: PropTypes.bool,
+    totalUsers: PropTypes.number,
 };
 
 function mapStateToProps({
     [SessionAction.Key]: {
         credentials,
         users,
-        questions
+        questions,
     }
 }) {
     return {
         credentials: credentials || {},
         users,
-        authUser: credentials.id
+        authUser: credentials.id,
+        questions
     };
 }
 

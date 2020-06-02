@@ -52,6 +52,10 @@ class MainPage extends React.Component {
         dispatch(
             SessionAction.Action(SessionAction.Types.GET_USERS),
         );
+
+        dispatch(
+            SessionAction.Action(SessionAction.Types.GET_QUESTION),
+        );
     }
 
 
