@@ -16,6 +16,7 @@ function SessionReducer(state = SessionDefaults, action) {
 
         case SessionAction.Types.FETCH_USERS_SUCCESS:
             delete state.errorMessage;
+            console.log(action.payload.users);
 
             return {
                 ... state,
@@ -63,6 +64,8 @@ function SessionReducer(state = SessionDefaults, action) {
 
             {
                 const {id, author} = action.payload.response;
+                const setScore = state.users[author].score + 10;
+                console.log(setScore);
 
                 return {
                     ... state,
@@ -80,7 +83,8 @@ function SessionReducer(state = SessionDefaults, action) {
                             questions: [
                                 ... state.users[author].questions,
                                 id,
-                            ]
+                            ],
+                            score: setScore
                         }
                     },
                     questions: {
@@ -109,9 +113,9 @@ function SessionReducer(state = SessionDefaults, action) {
 
             {
                 const {authUser, qid, id} = action.payload;
-                const stateAux = state ?? {};
-                const stateUsers = stateAux.users ?? {}
-                const stateAuthor = stateUsers[authUser] ?? {};
+                const setScore = state.users[authUser].score + 10;
+                console.log(setScore);
+                console.log(state);
 
 
                 return {
@@ -126,11 +130,12 @@ function SessionReducer(state = SessionDefaults, action) {
                     users: {
                         ... state.users,
                         [authUser]: {
-                            ... stateAuthor,
+                            ... state.users[authUser],
                             answers: {
-                                ... stateAuthor.answers,
+                                ... state.users[authUser].answers,
                                 [qid]: id
-                            }
+                            },
+                            score: setScore
                         }
                     },
                     questions: {

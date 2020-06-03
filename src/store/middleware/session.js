@@ -39,7 +39,17 @@ function* fetchUsers()
         if ( response && response !== 'Error' && response !== null && response !== 'null' )
         {
 
-            const users = response;
+
+            const getScore = Object.values(response).map(e => {
+                const score = (Object.values(e.answers).length * 10) + (e.questions.length * 10)
+                e.score = score;
+                return e;
+            })
+
+            let users = {};
+            for (var i = 0; i < getScore.length; ++i)
+                users[getScore[i].id] = getScore[i];
+
             yield put(SessionAction.Action(SessionAction.Types.FETCH_USERS_SUCCESS, { users }));
         }
         else

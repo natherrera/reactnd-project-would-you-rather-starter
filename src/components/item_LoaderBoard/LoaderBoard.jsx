@@ -48,9 +48,7 @@ class LoaderBoard extends React.PureComponent
                                             e.questions.length
                                         }</div>
                                         <div className="extra">Score: {
-                                            //NOTE: pendiente
-                                            e.ScorePoints
-
+                                            e.score
                                         }</div>
                                     </div>
                                 </div>
