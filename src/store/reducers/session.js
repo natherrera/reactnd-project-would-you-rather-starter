@@ -62,7 +62,7 @@ function SessionReducer(state = SessionDefaults, action) {
         case SessionAction.Types.FETCH_QUESTION_SUCCESS:
 
             {
-                const {id, idName} = action.payload.response;
+                const {id, author} = action.payload.response;
 
                 return {
                     ... state,
@@ -75,10 +75,10 @@ function SessionReducer(state = SessionDefaults, action) {
                     },
                     users: {
                         ... state.users,
-                        [idName]: {
-                            ... state.users[idName],
+                        [author]: {
+                            ... state.users[author],
                             questions: [
-                                ... state.users[idName].questions,
+                                ... state.users[author].questions,
                                 id,
                             ]
                         }

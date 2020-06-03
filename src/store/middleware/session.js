@@ -83,6 +83,7 @@ function* getQuestion()
 function* fetchQuestion(action)
 {
     const request = action.payload
+
     try {
         const response = yield (webClient._saveQuestion(request));
 

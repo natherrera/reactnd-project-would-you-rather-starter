@@ -27,8 +27,7 @@ class NewQuestion extends React.PureComponent
         const { questionOne, questionTwo } = this.state.values;
 
         const response = {
-            author: credentials.name,
-            id: credentials.id,
+            author: credentials.id,
             optionOneText: questionOne,
             optionTwoText: questionTwo
         }

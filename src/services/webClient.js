@@ -121,12 +121,11 @@ const generateUID = () => {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 }
 
-const formatQuestion = ({ optionOneText, optionTwoText, author, id }) => {
+const formatQuestion = ({ optionOneText, optionTwoText, author }) => {
     return {
       id: generateUID(),
       timestamp: Date.now(),
-      author,
-      idName: id,
+      author: author,
       optionOne: {
         votes: [],
         text: optionOneText,
@@ -155,8 +154,7 @@ const webClient = {
     _saveQuestion: (question) =>
     {
       return new Promise((res, rej) => {
-        const authedUser = question.author;
-        const authedId = question.id;
+        const authedId = question.author;
         const formattedQuestion = formatQuestion(question);
 
             setTimeout(() => {
