@@ -28,11 +28,13 @@ class LoaderBoard extends React.PureComponent
                     <Card.Content>
                         <div className="ui items">
                             {
-                            users.map((e) => (
+                            users
+                            .sort((a,b) => { return b.score - a.score })
+                            .map((e) => (
                                 <div key={
                                         e.id
                                     }
-                                    className="item">
+                                    className="item info-box">
                                     <div className="image"><img src={
                                             e.avatarURL
                                         }/></div>
@@ -44,12 +46,16 @@ class LoaderBoard extends React.PureComponent
                                         <div className="meta">Answered questions: {
                                             Object.keys(e.answers).length
                                         }</div>
+                                        <span className="line-box"></span>
                                         <div className="description">Created questions: {
                                             e.questions.length
                                         }</div>
-                                        <div className="extra">Score: {
-                                            e.score
-                                        }</div>
+                                        <div className="extra">
+                                            <div className="score-box">
+                                                <div className="title-item">Score:</div>
+                                                <div className="score-item">{e.score}</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             ))

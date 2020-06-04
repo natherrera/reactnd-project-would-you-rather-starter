@@ -81,7 +81,7 @@ class NewQuestion extends React.PureComponent
                     <Card.Meta>Complete the question</Card.Meta>
                     <Card.Description>
 
-                            <strong>Would You Rather ...</strong>
+                            <strong className="titleRather">Would You Rather ...</strong>
 
                             <Form.Field
                                 fluid
@@ -93,7 +93,7 @@ class NewQuestion extends React.PureComponent
                                 required
                             />
 
-                            <strong>or</strong>
+                            <strong className="titleRather">or</strong>
 
                             <Form.Field
                                 fluid

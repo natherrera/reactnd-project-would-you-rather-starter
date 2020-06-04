@@ -7,3 +7,7 @@
     position: relative;
     top: -13px;
 }
+
+.tabCard a {
+    width: 50%;
+}

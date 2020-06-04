@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {
-    Icon,
+    Image,
     Menu
 } from 'semantic-ui-react';
 import '../assets/styles/pages/main-page.css';
@@ -60,14 +60,15 @@ class MainPage extends React.Component {
 
 
     render() {
-        const { activeItem, users, userRather, statusRather } = this.state;
-        const { userName } = this.props;
+        const { activeItem, userRather } = this.state;
+        const { userName, credentials } = this.props;
+        console.log(credentials);
 
         return (
             <div className='main-container'>
                 <Menu stackable>
                     <Menu.Item>
-                        <img src='https://react.semantic-ui.com/logo.png'/>
+                        <Image src={credentials.avatarURL} avatar />
                         <p className='userName'>Hello <span>{ userName }</span></p>
 
                     </Menu.Item>
