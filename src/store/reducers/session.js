@@ -16,7 +16,6 @@ function SessionReducer(state = SessionDefaults, action) {
 
         case SessionAction.Types.FETCH_USERS_SUCCESS:
             delete state.errorMessage;
-            console.log(action.payload.users);
 
             return {
                 ... state,

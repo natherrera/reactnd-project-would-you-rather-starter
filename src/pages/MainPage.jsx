@@ -62,7 +62,6 @@ class MainPage extends React.Component {
     render() {
         const { activeItem, userRather } = this.state;
         const { userName, credentials } = this.props;
-        console.log(credentials);
 
         return (
             <div className='main-container'>

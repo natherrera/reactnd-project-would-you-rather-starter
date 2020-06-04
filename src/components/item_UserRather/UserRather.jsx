@@ -77,8 +77,6 @@ class UserRather extends React.Component {
         const { userRather, users, credentials } = this.props;
         const { activeResult } = this.state;
         const totalUsers = Object.keys(users).length;
-        console.log(userRather);
-
 
         return(
             <>

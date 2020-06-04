@@ -174,6 +174,25 @@ const webClient = {
             }, 1000)
         })
     },
+    _saveQuestionAnswer: (answer) =>
+    {
+      const { authUser, id, qid } = answer;
+      return new Promise((res, rej) => {
+
+            setTimeout(() => {
+
+              users = {
+                ... users,
+                [authUser]: {
+                    ... users[authUser],
+                    answers: {
+                        ... users[authUser].answers,
+                        [qid]: id
+                    }
+                }
+            }}, 1000)
+        })
+    },
 
 };
 

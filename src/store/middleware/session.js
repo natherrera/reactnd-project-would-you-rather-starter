@@ -121,7 +121,17 @@ function* fetchQuestionAnswer(action) {
     const request = action.payload;
 
     try {
-        yield put(SessionAction.Action(SessionAction.Types.FETCH_QUESTION_ANSWER_SUCCESS,  request ));
+        const response = yield (webClient._saveQuestionAnswer(request));
+
+        if ( response && response !== 'Error' && response !== null && response !== 'null' )
+        {
+            yield put(SessionAction.Action(SessionAction.Types.FETCH_QUESTION_ANSWER_SUCCESS,  response ));
+        } else {
+            yield put(SessionAction.Action(SessionAction.Types.FETCH_QUESTION_ANSWER_ERROR, {
+                errorMessage: 'No se pudo establecer la conexión con el servidor'
+            }));
+        }
+
     } catch (error) {
         yield put(SessionAction.Action(SessionAction.Types.FETCH_QUESTION_ANSWER_ERROR, {
             errorMessage: error.message
