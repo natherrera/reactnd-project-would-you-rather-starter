@@ -74,9 +74,10 @@ class UserRather extends React.Component {
 
     render() {
 
-        const { userRather, users } = this.props;
+        const { userRather, users, credentials } = this.props;
         const { activeResult } = this.state;
         const totalUsers = Object.keys(users).length;
+        console.log(userRather);
 
 
         return(
@@ -106,7 +107,7 @@ class UserRather extends React.Component {
                                 </Card.Description>
                                 <div className="item-result">
                                     {
-                                        userRather.answer.id === 'optionOne' && (
+                                        (credentials.answers[userRather.id] && credentials.answers[userRather.id] === 'optionOne') && (
                                             <div className="insign" >
                                                 <p>You choose this!</p>
                                             </div>
@@ -129,11 +130,12 @@ class UserRather extends React.Component {
                                 <div className="item-result">
                                     <div className="item-title">
                                     {
-                                        userRather.answer.id === 'optionTwo' && (
+                                        (credentials.answers[userRather.id] && credentials.answers[userRather.id] === 'optionTwo') && (
                                             <div className="insign" >
                                                 <p>You choose this!</p>
                                             </div>
                                         )
+
                                     }
                                         <p>Would you rather
                                         <span>{userRather.optionTwo.text}</span>

@@ -65,7 +65,6 @@ function SessionReducer(state = SessionDefaults, action) {
             {
                 const {id, author} = action.payload.response;
                 const setScore = state.users[author].score + 10;
-                console.log(setScore);
 
                 return {
                     ... state,
@@ -114,9 +113,6 @@ function SessionReducer(state = SessionDefaults, action) {
             {
                 const {authUser, qid, id} = action.payload;
                 const setScore = state.users[authUser].score + 10;
-                console.log(setScore);
-                console.log(state);
-
 
                 return {
                     ... state,

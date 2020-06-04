@@ -10,7 +10,18 @@ import {
 } from 'semantic-ui-react';
 import './../../assets/styles/components/newQuestion.css';
 
+const getUnanswered = (questions = [], credentials = [], users = []) => {
+    const q = Object.values(questions);
+    const userAnswers = Object.keys(credentials.answers);
+    const userUnanswered = q.filter(e => userAnswers.indexOf(e.id) === -1);
 
+    userUnanswered.forEach(e => {
+        e.avatarURL = users[e.author].avatarURL
+        e.name = users[e.author].name
+        e.section = 'unanswered'
+    });
+    return userUnanswered;
+}
 class NewQuestion extends React.PureComponent
 {
     state = {
@@ -35,6 +46,11 @@ class NewQuestion extends React.PureComponent
         dispatch(
             SessionAction.Action(SessionAction.Types.FETCH_QUESTION, response)
         );
+
+        const { changeItem, unanswered } = this.props;
+        const userRather = unanswered[0];
+
+        changeItem && changeItem('User Rather', 'userRather', userRather);
 
     };
 
@@ -120,11 +136,14 @@ NewQuestion.propTypes = {
 
 function mapStateToProps({
     [SessionAction.Key]: {
-        credentials
+        credentials,
+        users,
+        questions
     }
 }) {
     return {
         credentials,
+        unanswered: getUnanswered(questions, credentials, users)
     };
 }
 

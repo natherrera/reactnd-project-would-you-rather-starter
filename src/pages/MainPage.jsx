@@ -21,7 +21,7 @@ class MainPage extends React.Component {
                 'None', 'Home', 'New Question', 'Loader Board'
             ],
 
-            activeItem: 'None',
+            activeItem: 'Home',
             users: [],
             userRather: []
         };
@@ -29,7 +29,7 @@ class MainPage extends React.Component {
 
     handleItemClick = (e, {name}) => this.setState({activeItem: name})
 
-    changeItem = (item, name, obj) => {
+    changeItem = (item, name = '', obj = []) => {
         this.setState({
             activeItem: item,
             [name]: obj
@@ -60,7 +60,7 @@ class MainPage extends React.Component {
 
 
     render() {
-        const { activeItem, users, userRather } = this.state;
+        const { activeItem, users, userRather, statusRather } = this.state;
         const { userName } = this.props;
 
         return (
@@ -110,12 +110,8 @@ class MainPage extends React.Component {
                         )
                     }{
                         activeItem === 'New Question' && (
-                            <NewQuestion />
-                        )
-                    }{
-                        activeItem === 'None' && (
-                            <UserMain
-                                users={users}
+                            <NewQuestion
+                                changeItem={this.changeItem}
                             />
                         )
                     }{

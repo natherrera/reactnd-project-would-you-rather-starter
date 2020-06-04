@@ -4,6 +4,8 @@ import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { SessionAction } from '../../store/actions';
 
+import './../../assets/styles/components/home.css';
+
 import {
     Item,
     Button
