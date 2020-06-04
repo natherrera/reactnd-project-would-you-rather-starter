@@ -1,0 +1,12 @@
+.main-container .ui.card, .ui.cards > .card {
+    min-width: 290px !important;
+    width: auto !important;
+}
+
+.userName {
+    margin-left: 0.5em;
+}
+
+.userName span {
+    font-weight: 700;
+}

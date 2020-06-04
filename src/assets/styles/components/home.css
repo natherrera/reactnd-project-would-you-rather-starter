@@ -1,0 +1,13 @@
+.insign {
+    float: right;
+    background: orange;
+    padding: .5em 1em;
+    border-radius: 100px;
+    font-size: 11px;
+    position: relative;
+    top: -13px;
+}
+
+.tabCard a {
+    width: 50%;
+}

@@ -1,0 +1,44 @@
+.info-box .line-box {
+    width: 100%;
+    border-bottom: 1px solid #d2d2d2;
+    display: flex;
+    padding: 5px 0 !important;
+}
+
+.info-box .header {
+    text-align: left;
+    padding: 10px 0 7px 0;
+    display: block !important;
+}
+
+.info-box .description {
+    text-align: left;
+    margin-top: .6em !important;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.info-box .meta {
+    text-align: left;
+    margin-top: 8px !important;
+}
+
+.extra .score-box {
+    text-align: left;
+}
+
+.extra .score-box .title-item {
+    display: inline-block;
+    padding: 6px 11px 6px 7px;
+    background: #d8d8d8;
+    font-weight: 600;
+}
+
+.extra .score-box .score-item {
+    display: inline-block;
+    background: #ededed;
+    padding: 6px 24px 6px 15px;
+}
+
+
+
