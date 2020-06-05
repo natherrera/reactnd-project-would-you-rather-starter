@@ -1,6 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
+import {BrowserRouter as Router,
+    Switch,
+    Route,
+    Link} from 'react-router-dom';
 import {
     Image,
     Menu
@@ -8,6 +12,7 @@ import {
 import '../assets/styles/pages/main-page.css';
 import { SessionAction } from './../store/actions';
 import { Home, LoaderBoard, NewQuestion, UserMain, UserRather } from '../components';
+import NotFoundPage from './NotFoundPage';
 
 
 
@@ -23,17 +28,40 @@ class MainPage extends React.Component {
 
             activeItem: 'Home',
             users: [],
-            userRather: []
+            userRather: [],
+            questionId: ''
         };
     }
 
-    handleItemClick = (e, {name}) => this.setState({activeItem: name})
+    componentDidMount = () => {
+        const { dispatch } = this.props;
+
+        this.props.history.push('/main')
+
+        dispatch(
+            SessionAction.Action(SessionAction.Types.GET_USERS),
+        );
+
+        dispatch(
+            SessionAction.Action(SessionAction.Types.GET_QUESTION),
+        );
+    }
+
+    handleItemClick = (e) => {
+        const id = e.target.id;
+        this.setState({activeItem: id});
+    }
 
     changeItem = (item, name = '', obj = []) => {
+
         this.setState({
+            questionId: obj.id,
             activeItem: item,
             [name]: obj
-        })
+        });
+
+        this.props.history.push(`/questions/${obj.id}`)
+
     }
 
     logout = () => {
@@ -46,82 +74,140 @@ class MainPage extends React.Component {
 
     }
 
-    componentDidMount = () => {
-        const { dispatch } = this.props;
 
-        dispatch(
-            SessionAction.Action(SessionAction.Types.GET_USERS),
-        );
-
-        dispatch(
-            SessionAction.Action(SessionAction.Types.GET_QUESTION),
-        );
-    }
 
 
     render() {
-        const { activeItem, userRather } = this.state;
+        const { activeItem, userRather, questionId } = this.state;
         const { userName, credentials } = this.props;
 
         return (
-            <div className='main-container'>
-                <Menu stackable>
-                    <Menu.Item>
-                        <Image src={credentials.avatarURL} avatar />
-                        <p className='userName'>Hello <span>{ userName }</span></p>
 
-                    </Menu.Item>
+            <Router>
 
-                    <Menu.Item name='Home'
-                        active={ activeItem === 'Home' }
-                        onClick={ this.handleItemClick }>
-                        Home
-                    </Menu.Item>
+                <div className='main-container'>
 
-                    <Menu.Item name='New Question'
-                        active={ activeItem === 'New Question'}
-                        onClick={ this.handleItemClick}>
-                        New Question
-                    </Menu.Item>
+                    <Menu stackable>
+                        <Menu.Item>
+                            <Image src={credentials.avatarURL} avatar />
+                            <p className='userName'>Hello <span>{ userName }</span></p>
+                        </Menu.Item>
 
-                    <Menu.Item name='Loader Board'
-                        active={activeItem === 'Loader Board'}
-                        onClick={this.handleItemClick}>
-                        Loader Board
-                    </Menu.Item>
+                        <Link to="/main">
+                            <div id='Home'
+                                className={`item ${activeItem === 'Home' ? 'active' : ''}`}
+                                onClick={ this.handleItemClick }>
+                                Home
+                            </div>
+                        </Link>
 
-                    <Menu.Menu position='right'>
-                        <Menu.Item
-                        name='logout'
-                        active={activeItem === 'logout'}
-                        onClick={this.logout}
-                        />
-                    </Menu.Menu>
-                </Menu>
-                    {
-                        activeItem === 'Home' && (
+                        <Link to="/add">
+                            <div
+                                id='New Question'
+                                className={`item ${activeItem === 'New Question' ? 'active' : ''}`}
+                                onClick={ this.handleItemClick}>
+                                New Question
+                            </div>
+                        </Link>
+
+                        <Link to="/loaderboard">
+                            <div
+                                id='Loader Board'
+                                className={`item ${activeItem === 'Loader Board' ? 'active' : ''}`}
+                                onClick={this.handleItemClick}
+                                >
+                                Loader Board
+                            </div>
+                        </Link>
+
+                        <Menu.Menu position='right'>
+                            <Menu.Item
+                                name='logout'
+                                className={`item ${activeItem === 'logout' ? 'active' : ''}`}
+                                onClick={this.logout}
+                            />
+                        </Menu.Menu>
+                    </Menu>
+
+                    <Switch>
+                        <Route path="/main">
                             <Home
                                 changeItem={this.changeItem}
                             />
-                        )
-                    }{
-                        activeItem === 'Loader Board' && (
+                        </Route>
+
+                        <Route path="/loaderboard">
                             <LoaderBoard />
-                        )
-                    }{
-                        activeItem === 'New Question' && (
+                        </Route>
+
+                        <Route path="/add">
                             <NewQuestion
                                 changeItem={this.changeItem}
                             />
-                        )
-                    }{
-                        activeItem === 'User Rather' && (
+                        </Route>
+
+                        {/* <Route path={`questions/${questionId}`}> */}
+                        <Route path="/questions">
                             <UserRather
                                 userRather={userRather}
                             />
-                        )
-                    }
-            </div>
+                        </Route>
+
+                    </Switch>
+
+                </div>
+
+            </Router>
+
+
+                    // {
+                    //     activeItem === 'Home' && (
+                    //         <Route path='/main/home'
+                    //             render= {
+                    //                 <Home
+                    //                     changeItem={this.changeItem}
+                    //                 />
+                    //         }/>
+                    //     )
+                    // }{
+                    //     activeItem === 'Loader Board' && (
+                    //         <Route path='/loaderboard'
+                    //             render= {
+                    //             <LoaderBoard />
+                    //         }/>
+                    //     )
+                    // }{
+                    //     activeItem === 'New Question' && (
+                    //         <Route path='/add'
+                    //             render= {
+                    //             <NewQuestion
+                    //                 changeItem={this.changeItem}
+                    //             />
+                    //         }/>
+                    //     )
+                    // }{
+                    //     activeItem === 'User Rather' && (
+
+                    //         questionId === "" ? (
+                    //             <>
+                    //             <Route path={`questions/${questionId}`}
+                    //                 render= {
+                    //                 <UserRather
+                    //                     userRather={userRather}
+                    //                 />
+                    //             }/>
+                    //             </>
+                    //         ) : (
+                    //             <>
+                    //             <Route path='/error'
+                    //                 render= {
+                    //                 <NotFoundPage />
+                    //             }/>
+                    //             </>
+                    //         )
+                    //     )
+
+                    // }
 
         );
     }

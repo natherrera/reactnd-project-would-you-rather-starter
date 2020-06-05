@@ -7,6 +7,7 @@ const RouteWithLayout = lazy(() => import('./components/layouts/RouteWithLayout'
 const AppLayout = lazy(() => import('./components/layouts/AppLayout'));
 const LoginContainer = lazy(() => import('./components/layouts/LoginContainter'));
 const MainContainer = lazy(() => import('./components/layouts/MainContainer'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 class App extends React.Component
 {
@@ -28,7 +29,7 @@ class App extends React.Component
                             component={ MainContainer }
                         />
 
-                        {/* <Route component={ NotFoundPage } /> */}
+                        <Route component={ NotFoundPage } />
                     </Switch>
                 </Suspense>
             </div>
