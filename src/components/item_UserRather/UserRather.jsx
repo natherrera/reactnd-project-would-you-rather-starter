@@ -78,6 +78,7 @@ class UserRather extends React.Component {
         const { activeResult } = this.state;
         const totalUsers = Object.keys(users).length;
 
+
         return(
             <>
                 <Loader message='Cargando' />
@@ -92,6 +93,7 @@ class UserRather extends React.Component {
                                 <Card.Description>
                                     <strong>Would You Rather ...</strong>
                                 </Card.Description>
+
                                 <Form.Group grouped>
                                     <Form.Field label={userRather.optionOne.text} id='optionOne' control='input' type='radio' name='answer' onChange={ (event) => this.onRadioChange(userRather.optionOne, event) }/>
                                     <Form.Field label={userRather.optionTwo.text} id='optionTwo' control='input' type='radio' name='answer' onChange={ (event) => this.onRadioChange(userRather.optionTwo, event) }/>

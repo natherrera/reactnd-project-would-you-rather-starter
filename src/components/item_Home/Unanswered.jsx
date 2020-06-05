@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { SessionAction } from '../../store/actions';
+import {Link} from 'react-router-dom';
 
 import './../../assets/styles/components/home.css';
 
@@ -42,7 +43,7 @@ class Unanswered extends React.PureComponent {
 
     render() {
 
-        const { unanswered } = this.props;
+        const { unanswered, match } = this.props;
 
         return (
             <>
@@ -57,15 +58,18 @@ class Unanswered extends React.PureComponent {
                         <Item.Description>
                             <h3>Would you rather ...</h3>
                             <p> { user.optionOne.text }  </p>
-                            <Button basic color='teal'
-                            onClick={ (event) => this.handleButtonChange(user)
-                            }
-                            >View Poll</Button>
+
+                            <Link to={`${match.url}/questions/${user.id}`} onClick={ (event) => this.handleButtonChange(user)}>
+                                <Button basic color='teal'>View Poll</Button>
+                            </Link>
+
                         </Item.Description>
                     </Item.Content>
                 </Item>
 
+
                 )
+
             }
             </>
         )
@@ -85,12 +89,14 @@ function mapStateToProps({
     [SessionAction.Key]: {
         credentials,
         users,
-        questions
+        questions,
+        userRather
     }
 }) {
     return {
         credentials: credentials || {},
-        unanswered: getUnanswered(questions, credentials, users)
+        unanswered: getUnanswered(questions, credentials, users),
+        userRather
     };
 }
 

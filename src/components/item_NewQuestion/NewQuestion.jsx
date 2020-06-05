@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { SessionAction } from '../../store/actions';
+import {Link} from 'react-router-dom';
 
 import {
     Card,
@@ -34,7 +35,11 @@ class NewQuestion extends React.PureComponent
     onQuestionsSubmit = () =>
     {
 
-        const { dispatch, credentials } = this.props;
+        const userRather = unanswered[0];
+
+        changeItem && changeItem('User Rather', 'userRather', userRather);
+
+        const { dispatch, credentials, changeItem, unanswered } = this.props;
         const { questionOne, questionTwo } = this.state.values;
 
         const response = {
@@ -47,10 +52,6 @@ class NewQuestion extends React.PureComponent
             SessionAction.Action(SessionAction.Types.FETCH_QUESTION, response)
         );
 
-        const { changeItem, unanswered } = this.props;
-        const userRather = unanswered[0];
-
-        changeItem && changeItem('User Rather', 'userRather', userRather);
 
     };
 
@@ -71,6 +72,7 @@ class NewQuestion extends React.PureComponent
 
     render()
     {
+        const { match, unanswered } = this.props;
 
         return (
             <Form id='questions-form' onSubmit={ this.onQuestionsSubmit }>
@@ -110,13 +112,15 @@ class NewQuestion extends React.PureComponent
                 </Card.Content>
                 <Card.Content extra>
 
-                    <Form.Button
-                        fluid
-                        color='teal'
-                        type='submit'
-                    >
-                        Submit
-                    </Form.Button>
+                    <Link to="main" >
+                        <Form.Button
+                            fluid
+                            color='teal'
+                            type='submit'
+                        >
+                            Submit
+                        </Form.Button>
+                    </Link>
 
                 </Card.Content>
             </Card>

@@ -1,7 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Loader } from './components';
-import Login from './components/layouts/LoginContainter';
 // Lazy loaded components.
 const RouteWithLayout = lazy(() => import('./components/layouts/RouteWithLayout'));
 const AppLayout = lazy(() => import('./components/layouts/AppLayout'));
@@ -14,6 +13,7 @@ class App extends React.Component
 
     render()
     {
+
         return (
             <div className='app'>
                 <Suspense fallback={ <Loader message='Cargando' /> }>
@@ -30,6 +30,7 @@ class App extends React.Component
                         />
 
                         <Route component={ NotFoundPage } />
+
                     </Switch>
                 </Suspense>
             </div>
@@ -38,3 +39,4 @@ class App extends React.Component
 }
 
 export default App;
+

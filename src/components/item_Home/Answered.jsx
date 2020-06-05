@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { SessionAction } from '../../store/actions';
+import {Link} from 'react-router-dom';
 
 import {
     Item,
@@ -47,7 +48,7 @@ class Answered extends React.PureComponent {
 
     render() {
 
-        const { answered } = this.props;
+        const { answered, match } = this.props;
 
         return (
             <>
@@ -62,10 +63,9 @@ class Answered extends React.PureComponent {
                         <Item.Description>
                             <h3>Would you rather ...</h3>
                             <p> {this.getAnswer(user)}  </p>
-                            <Button basic color='teal'
-                            onClick={ (event) => this.handleButtonChange(user)
-                            }
-                            >View Poll</Button>
+                            <Link to={`${match.url}/questions/${user.id}`} onClick={ (event) => this.handleButtonChange(user)}>
+                                <Button basic color='teal'>View Poll</Button>
+                            </Link>
                         </Item.Description>
                     </Item.Content>
                 </Item>

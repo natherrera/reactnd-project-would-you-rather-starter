@@ -1,19 +1,17 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
+import { SessionAction } from './../store/actions';
 import {BrowserRouter as Router,
     Switch,
     Route,
     Link} from 'react-router-dom';
+import { Home, LoaderBoard, NewQuestion, UserRather } from '../components';
 import {
     Image,
     Menu
 } from 'semantic-ui-react';
 import '../assets/styles/pages/main-page.css';
-import { SessionAction } from './../store/actions';
-import { Home, LoaderBoard, NewQuestion, UserMain, UserRather } from '../components';
-import NotFoundPage from './NotFoundPage';
-
 
 
 class MainPage extends React.Component {
@@ -36,8 +34,6 @@ class MainPage extends React.Component {
     componentDidMount = () => {
         const { dispatch } = this.props;
 
-        this.props.history.push('/main')
-
         dispatch(
             SessionAction.Action(SessionAction.Types.GET_USERS),
         );
@@ -59,9 +55,6 @@ class MainPage extends React.Component {
             activeItem: item,
             [name]: obj
         });
-
-        this.props.history.push(`/questions/${obj.id}`)
-
     }
 
     logout = () => {
@@ -74,20 +67,19 @@ class MainPage extends React.Component {
 
     }
 
-
-
-
     render() {
-        const { activeItem, userRather, questionId } = this.state;
-        const { userName, credentials } = this.props;
+        const { activeItem, questionId, userRather } = this.state;
+        const { userName, credentials, match } = this.props;
+
 
         return (
 
-            <Router>
+            <Router >
 
                 <div className='main-container'>
 
                     <Menu stackable>
+
                         <Menu.Item>
                             <Image src={credentials.avatarURL} avatar />
                             <p className='userName'>Hello <span>{ userName }</span></p>
@@ -127,27 +119,28 @@ class MainPage extends React.Component {
                                 onClick={this.logout}
                             />
                         </Menu.Menu>
+
                     </Menu>
 
                     <Switch>
-                        <Route path="/main">
+
+                        <Route exact path="/main">
                             <Home
                                 changeItem={this.changeItem}
                             />
                         </Route>
 
-                        <Route path="/loaderboard">
+                        <Route exact path="/loaderboard">
                             <LoaderBoard />
                         </Route>
 
-                        <Route path="/add">
+                        <Route exact path="/add">
                             <NewQuestion
                                 changeItem={this.changeItem}
                             />
                         </Route>
 
-                        {/* <Route path={`questions/${questionId}`}> */}
-                        <Route path="/questions">
+                        <Route exact path={`${match.path}/questions/${questionId}`}>
                             <UserRather
                                 userRather={userRather}
                             />
@@ -159,56 +152,6 @@ class MainPage extends React.Component {
 
             </Router>
 
-
-                    // {
-                    //     activeItem === 'Home' && (
-                    //         <Route path='/main/home'
-                    //             render= {
-                    //                 <Home
-                    //                     changeItem={this.changeItem}
-                    //                 />
-                    //         }/>
-                    //     )
-                    // }{
-                    //     activeItem === 'Loader Board' && (
-                    //         <Route path='/loaderboard'
-                    //             render= {
-                    //             <LoaderBoard />
-                    //         }/>
-                    //     )
-                    // }{
-                    //     activeItem === 'New Question' && (
-                    //         <Route path='/add'
-                    //             render= {
-                    //             <NewQuestion
-                    //                 changeItem={this.changeItem}
-                    //             />
-                    //         }/>
-                    //     )
-                    // }{
-                    //     activeItem === 'User Rather' && (
-
-                    //         questionId === "" ? (
-                    //             <>
-                    //             <Route path={`questions/${questionId}`}
-                    //                 render= {
-                    //                 <UserRather
-                    //                     userRather={userRather}
-                    //                 />
-                    //             }/>
-                    //             </>
-                    //         ) : (
-                    //             <>
-                    //             <Route path='/error'
-                    //                 render= {
-                    //                 <NotFoundPage />
-                    //             }/>
-                    //             </>
-                    //         )
-                    //     )
-
-                    // }
-
         );
     }
 }
@@ -216,13 +159,16 @@ class MainPage extends React.Component {
 function mapStateToProps({
     [SessionAction.Key]: {
         authenticated,
-        credentials
+        credentials,
+        userRather
     }
 }) {
     return {
         authenticated,
         credentials,
         userName: credentials.name,
+        userRather
+
     };
 }
 

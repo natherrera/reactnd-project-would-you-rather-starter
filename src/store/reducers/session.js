@@ -153,6 +153,26 @@ function SessionReducer(state = SessionDefaults, action) {
                 loading: true
             };
 
+        case SessionAction.Types.FETCH_USER_RATHER:
+
+            return {
+                ... state
+            };
+
+        case SessionAction.Types.FETCH_USER_RATHER_SUCCESS:
+
+            return {
+                ... state,
+                userRather: action.payload
+            };
+
+        case SessionAction.Types.FETCH_USER_RATHER_ERROR:
+
+            return {
+                ... state,
+                errorMessage: action.payload.errorMessage
+            };
+
         case SessionAction.Types.LOGIN_SUCCESS:
             delete state.errorMessage;
 
