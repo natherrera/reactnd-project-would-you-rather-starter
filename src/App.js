@@ -29,7 +29,10 @@ class App extends React.Component
                             component={ MainContainer }
                         />
 
-                        <Route component={ NotFoundPage } />
+                        <RouteWithLayout
+                            layout={ AppLayout }
+                            component={ NotFoundPage }
+                        />
 
                     </Switch>
                 </Suspense>

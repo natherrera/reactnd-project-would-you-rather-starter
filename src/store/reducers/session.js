@@ -5,12 +5,12 @@ function SessionReducer(state = SessionDefaults, action) {
     switch (action.type) {
         case SessionAction.Types.GET_USERS:
             return {
-                ... state
+                ...state
             };
 
         case SessionAction.Types.FETCH_USERS:
             return {
-                ... state,
+                ...state,
                 usersLoading: ! state.users || Object.keys(state.users).length === 0
             };
 
@@ -18,7 +18,7 @@ function SessionReducer(state = SessionDefaults, action) {
             delete state.errorMessage;
 
             return {
-                ... state,
+                ...state,
                 users: action.payload.users,
                 usersLoading: false
             };
@@ -26,14 +26,14 @@ function SessionReducer(state = SessionDefaults, action) {
         case SessionAction.Types.FETCH_USERS_ERROR:
 
             return {
-                ... state,
+                ...state,
                 usersLoading: false,
                 errorMessage: action.payload.errorMessage
             };
 
         case SessionAction.Types.GET_QUESTION:
             return {
-                ... state
+                ...state
             };
 
         case SessionAction.Types.GET_QUESTION_SUCCESS:
@@ -41,7 +41,7 @@ function SessionReducer(state = SessionDefaults, action) {
                 delete state.errorMessage;
 
             return {
-                ... state,
+                ...state,
                 questions: action.payload.questions,
                 questionLoading: false
             }
@@ -49,14 +49,14 @@ function SessionReducer(state = SessionDefaults, action) {
 
         case SessionAction.Types.GET_QUESTION_ERROR:
             return {
-                ... state,
+                ...state,
                 questionLoading: false,
                 errorMessage: action.payload.errorMessage
             };
 
         case SessionAction.Types.FETCH_QUESTION:
             return {
-                ... state
+                ...state
             };
 
         case SessionAction.Types.FETCH_QUESTION_SUCCESS:
@@ -66,27 +66,27 @@ function SessionReducer(state = SessionDefaults, action) {
                 const setScore = state.users[author].score + 10;
 
                 return {
-                    ... state,
+                    ...state,
                     credentials: {
-                        ... state.credentials,
+                        ...state.credentials,
                         questions: {
-                            ... state.credentials.questions,
+                            ...state.credentials.questions,
                             id,
                         }
                     },
                     users: {
-                        ... state.users,
+                        ...state.users,
                         [author]: {
-                            ... state.users[author],
+                            ...state.users[author],
                             questions: [
-                                ... state.users[author].questions,
+                                ...state.users[author].questions,
                                 id,
                             ],
                             score: setScore
                         }
                     },
                     questions: {
-                        ... state.questions,
+                        ...state.questions,
                         [id]: action.payload.response
                     }
                 };
@@ -96,7 +96,7 @@ function SessionReducer(state = SessionDefaults, action) {
         case SessionAction.Types.FETCH_QUESTION_ERROR:
 
             return {
-                ... state,
+                ...state,
                 questionLoading: false,
                 errorMessage: action.payload.errorMessage
             };
@@ -104,7 +104,7 @@ function SessionReducer(state = SessionDefaults, action) {
 
         case SessionAction.Types.FETCH_QUESTION_ANSWER:
             return {
-                ... state
+                ...state
             };
 
         case SessionAction.Types.FETCH_QUESTION_ANSWER_SUCCESS:
@@ -114,27 +114,27 @@ function SessionReducer(state = SessionDefaults, action) {
                 const setScore = state.users[authUser].score + 10;
 
                 return {
-                    ... state,
+                    ...state,
                     credentials: {
-                        ... state.credentials,
+                        ...state.credentials,
                         answers: {
                             ...state.credentials.answers,
                             [qid]: id
                         }
                     },
                     users: {
-                        ... state.users,
+                        ...state.users,
                         [authUser]: {
-                            ... state.users[authUser],
+                            ...state.users[authUser],
                             answers: {
-                                ... state.users[authUser].answers,
+                                ...state.users[authUser].answers,
                                 [qid]: id
                             },
                             score: setScore
                         }
                     },
                     questions: {
-                        ... state.questions
+                        ...state.questions
                     }
                 };
             }
@@ -142,42 +142,22 @@ function SessionReducer(state = SessionDefaults, action) {
         case SessionAction.Types.FETCH_QUESTION_ANSWER_ERROR:
 
             return {
-                ... state,
+                ...state,
                 questionLoading: false,
                 errorMessage: action.payload.errorMessage
             };
 
         case SessionAction.Types.LOGIN:
             return {
-                ... state,
+                ...state,
                 loading: true
-            };
-
-        case SessionAction.Types.FETCH_USER_RATHER:
-
-            return {
-                ... state
-            };
-
-        case SessionAction.Types.FETCH_USER_RATHER_SUCCESS:
-
-            return {
-                ... state,
-                userRather: action.payload
-            };
-
-        case SessionAction.Types.FETCH_USER_RATHER_ERROR:
-
-            return {
-                ... state,
-                errorMessage: action.payload.errorMessage
             };
 
         case SessionAction.Types.LOGIN_SUCCESS:
             delete state.errorMessage;
 
             return {
-                ... state,
+                ...state,
                 loading: false,
                 authenticated: true,
                 credentials: action.payload
@@ -186,7 +166,7 @@ function SessionReducer(state = SessionDefaults, action) {
         case SessionAction.Types.LOGIN_ERROR:
 
             return {
-                ... state,
+                ...state,
                 loading: false,
                 authenticated: false,
                 errorMessage: action.payload.errorMessage

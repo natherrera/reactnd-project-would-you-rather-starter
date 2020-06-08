@@ -35,12 +35,13 @@ class NewQuestion extends React.PureComponent
     onQuestionsSubmit = () =>
     {
 
+        const { dispatch, credentials, changeItem, unanswered } = this.props;
+        const { questionOne, questionTwo } = this.state.values;
+
         const userRather = unanswered[0];
 
         changeItem && changeItem('User Rather', 'userRather', userRather);
 
-        const { dispatch, credentials, changeItem, unanswered } = this.props;
-        const { questionOne, questionTwo } = this.state.values;
 
         const response = {
             author: credentials.id,
@@ -72,8 +73,6 @@ class NewQuestion extends React.PureComponent
 
     render()
     {
-        const { match, unanswered } = this.props;
-
         return (
             <Form id='questions-form' onSubmit={ this.onQuestionsSubmit }>
             <Card.Group>

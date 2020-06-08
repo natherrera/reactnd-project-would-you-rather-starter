@@ -1,7 +1,7 @@
 import React from 'react';
 import LoginPage from '../../pages/LoginPage';
 import { wallPaper } from '../../assets/images';
-import { Card, Icon, Image } from 'semantic-ui-react';
+import { Card, Image } from 'semantic-ui-react';
 
 
 export default function Login()

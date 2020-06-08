@@ -17,9 +17,7 @@ const dropdownUsers = (users = []) => {
             value: e.name
         }
     ))
-
 }
-
 
 class LoginPage extends React.PureComponent
 {
@@ -93,7 +91,7 @@ class LoginPage extends React.PureComponent
   {
         const { hintIsVisible, validations } = this.state;
 
-        const { authenticated, loading, users } = this.props;
+        const { authenticated, users } = this.props;
 
         return !authenticated ? (
           <div className='page-container'>

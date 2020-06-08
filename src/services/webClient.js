@@ -182,11 +182,11 @@ const webClient = {
             setTimeout(() => {
 
               users = {
-                ... users,
+                ...users,
                 [authUser]: {
-                    ... users[authUser],
+                    ...users[authUser],
                     answers: {
-                        ... users[authUser].answers,
+                        ...users[authUser].answers,
                         [qid]: id
                     }
                 }

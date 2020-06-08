@@ -26,26 +26,6 @@ function* login(action)
     }
 }
 
-function* userRather(action)
-{
-    try
-    {
-       const history = action.payload.history;
-       const response = action.payload.userRather;
-
-        debugger;
-
-        yield put(SessionAction.Action(SessionAction.Types.FETCH_USER_RATHER_SUCCESS, action.payload.userRather));
-
-        // history.push(`main/questions/${response.id}`);
-
-    }
-    catch (e)
-    {
-        yield put(SessionAction.Action(SessionAction.Types.FETCH_USER_RATHER_ERROR, { errorMessage: e.message }));
-    }
-}
-
 function* getUsers()
 {
     yield put(SessionAction.Action(SessionAction.Types.FETCH_USERS));
@@ -173,7 +153,6 @@ export default function* initSession()
         yield takeLatest(SessionAction.Types.GET_QUESTION, getQuestion),
         yield takeLatest(SessionAction.Types.FETCH_QUESTION, fetchQuestion),
         yield takeLatest(SessionAction.Types.FETCH_QUESTION_ANSWER, fetchQuestionAnswer),
-        yield takeLatest(SessionAction.Types.FETCH_USER_RATHER, userRather),
         yield takeLatest(SessionAction.Types.LOGIN, login),
         yield takeLatest(SessionAction.Types.LOGOUT, logout)
     );

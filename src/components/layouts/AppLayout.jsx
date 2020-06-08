@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { Grid } from 'semantic-ui-react';
 import { SessionAction } from '../../store/actions';
-import { Navbar, Sidebar } from '../../components';
 
 class AppLayout extends React.PureComponent
 {
@@ -15,7 +14,6 @@ class AppLayout extends React.PureComponent
 
         return authenticated || pathname === '/main/login' ?
             <>
-                {/* <Navbar /> */}
                 <Grid stackable centered padded className='app-container' columns='equal'>
 
                     <Grid.Row> {

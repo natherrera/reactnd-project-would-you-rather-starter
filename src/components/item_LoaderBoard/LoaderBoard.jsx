@@ -37,7 +37,7 @@ class LoaderBoard extends React.PureComponent
                                     className="item info-box">
                                     <div className="image"><img src={
                                             e.avatarURL
-                                        }/></div>
+                                        } alt={e.name} /></div>
                                     <div className="content">
                                         <div className="header">
                                             {

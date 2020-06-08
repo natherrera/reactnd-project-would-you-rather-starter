@@ -10,9 +10,7 @@ import {
     Form,
     Progress,
     Button,
-    Dimmer,
-    Loader,
-    Segment
+    Loader
 } from 'semantic-ui-react';
 
 class UserRather extends React.Component {
